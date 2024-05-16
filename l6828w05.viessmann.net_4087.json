@@ -63,7 +63,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -160,7 +160,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -244,7 +244,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -328,7 +328,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -412,7 +412,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -577,7 +577,7 @@
                         "functionCode": 4
                       }
                     },
-                    "intervalMs": 60000,
+                    "intervalMs": 10000,
                     "sourceMode": "UseBoth"
                   },
                   "Current": {
@@ -750,7 +750,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -816,7 +816,7 @@
                     "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
-                  "PollGroup Current": {
+                  "Current": {
                     "model": {
                       "Current_L1": {
                         "registerStartAddress": 7002,
@@ -882,22 +882,22 @@
           "W16EnergyManagement1.GT2500.Consumption": "splunkPoll",
           "W16EnergyManagement1.GT2500.GT2500": "GT2500",
           "W16EnergyManagement1.BusBar4.Current": "splunkPoll",
-          "W16EnergyManagement1.AxisB.PollGroup Current": "splunkPoll",
-          "W16EnergyManagement1.AxisA.PollGroup Current": "splunkPoll",
-          "W16EnergyManagement1.AxisC.PollGroup Current": "splunkPoll",
-          "W16EnergyManagement1.LightingExterior.PollGroup Current": "splunkPoll",
-          "W16EnergyManagement1.LightingGeneral.PollGroup Current": "splunkPoll",
           "W16EnergyManagement1.BusBar2.Current": "splunkPoll",
           "W16EnergyManagement1.GT2500.Current": "splunkPoll",
           "W16EnergyManagement1.BusBar1.Consumption": "splunkPoll",
-          "W16EnergyManagement1.BusBar1.PollGroup Current": "splunkPoll",
           "W16EnergyManagement1.BusBar1.BusBar1": "splunk",
           "W16EnergyManagement1.BusBar3.Consumption": "splunkPoll",
-          "W16EnergyManagement1.BusBar3.PollGroup Current": "splunkPoll"
+          "W16EnergyManagement1.AxisB.Current": "splunkPoll",
+          "W16EnergyManagement1.AxisA.Current": "splunkPoll",
+          "W16EnergyManagement1.AxisC.Current": "splunkPoll",
+          "W16EnergyManagement1.LightingExterior.Current": "splunkPoll",
+          "W16EnergyManagement1.LightingGeneral.Current": "splunkPoll",
+          "W16EnergyManagement1.BusBar1.Current": "splunkPoll",
+          "W16EnergyManagement1.BusBar3.Current": "splunkPoll"
         },
         "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.ModbusReaderModule/versions/2",
-        "$timestamp": "2024-02-28T20:05:45.1804522Z",
-        "$version": 1
+        "$timestamp": "2024-05-16T13:04:25.5408499Z",
+        "$version": 15
       }
     },
     "mqtt": {
@@ -1201,8 +1201,129 @@
     },
     "streamprocessor": {
       "configuration": {
-        "$timestamp": "2023-08-31T11:38:18.8402472Z",
-        "$version": 1
+        "configuration": {
+          "inputs": {
+            "Input-4": {
+              "sourceRegEx": "W16EnergyManagement1.BusBar4",
+              "scopeRegEx": "Consumption",
+              "into": [
+                "Aggregator-3",
+                "Aggregator-4"
+              ]
+            }
+          },
+          "blocks": {
+            "Aggregator-3": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "Active_Energy_PG_100MWh": "last",
+                  "Active_Energy_PG_kWh": "last"
+                },
+                "default": "last"
+              },
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              },
+              "into": [
+                "ExpEval-4"
+              ]
+            },
+            "Output-5": {
+              "type": "Output",
+              "source": "",
+              "scope": ""
+            },
+            "Aggregator-4": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "Active_Energy_PG_kWh": "first",
+                  "Active_Energy_PG_100MWh": "first"
+                },
+                "default": "first"
+              },
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              },
+              "into": [
+                "ExpEval-5"
+              ]
+            },
+            "Output-6": {
+              "type": "Output",
+              "source": "",
+              "scope": ""
+            },
+            "ExpEval-4": {
+              "type": "ExpEval",
+              "expressions": {
+                "energy_new": "100000*Active_Energy_PG_100MWh+Active_Energy_PG_kWh"
+              },
+              "into": [
+                "Output-5"
+              ]
+            },
+            "ExpEval-5": {
+              "type": "ExpEval",
+              "into": [
+                "Output-6"
+              ],
+              "expressions": {
+                "energy_old": "100000*Active_Energy_PG_100MWh+Active_Energy_PG_kWh"
+              }
+            }
+          },
+          "DefaultOutputTopic": "",
+          "ui": {
+            "flowEditor": {
+              "blockPositions": {
+                "Aggregator-3": {
+                  "x": -267.4284812067524,
+                  "y": -212.14285394350185
+                },
+                "Input-4": {
+                  "x": -676,
+                  "y": -214
+                },
+                "Output-5": {
+                  "x": 477.0000948970868,
+                  "y": -213.99998913073014
+                },
+                "Aggregator-4": {
+                  "x": -275,
+                  "y": 19
+                },
+                "Output-6": {
+                  "x": 480,
+                  "y": 22
+                },
+                "ExpEval-4": {
+                  "x": 105,
+                  "y": -213
+                },
+                "ExpEval-5": {
+                  "x": 101,
+                  "y": 16
+                }
+              }
+            }
+          }
+        },
+        "$messageInputs": {
+          "splunkPoll": "streamprocessor"
+        },
+        "$messageOutputs": {
+          "Output-5": "test",
+          "Output-6": "test-2"
+        },
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.StreamProcessorModule/versions/5",
+        "$timestamp": "2024-05-16T14:34:52.1142263Z",
+        "$version": 19
       }
     },
     "logger": {
