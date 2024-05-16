@@ -1,0 +1,138 @@
+{
+  "modules": {
+    "modbus": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5733273Z",
+        "$version": 6
+      }
+    },
+    "center": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5735216Z",
+        "$version": 6
+      }
+    },
+    "mqtt": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.573681Z",
+        "$version": 6
+      }
+    },
+    "azure": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5751331Z",
+        "$version": 6
+      }
+    },
+    "splunk": {
+      "configuration": {
+        "endpoint": {
+          "url": "https://10.13.21.22:8088/services/collector/event",
+          "token": "6112a68b-c8f6-4946-a7dd-7d48a710bc83",
+          "sslCheck": false,
+          "proxy": ""
+        },
+        "host": "COTL0001W05-4090",
+        "interval": 1000,
+        "sendTimestamp": true,
+        "sourceType": "_json",
+        "bufferQueueSettings": {
+          "enablePersist": false
+        },
+        "$messageInputs": {},
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.SplunkHecModule/versions/3",
+        "$timestamp": "2024-05-16T09:24:16.57518Z",
+        "$version": 10
+      }
+    },
+    "opcua": {
+      "configuration": {
+        "servers": {
+          "SPARE": {
+            "endpoint": {
+              "pollGroups": {},
+              "subscriptionGroups": {},
+              "subscriptions": {},
+              "url": "",
+              "resetBlackListIntervalMs": 15000
+            },
+            "client": {
+              "application": {
+                "security": {
+                  "authentication": {
+                    "credentials": {},
+                    "strategy": "Anonymous"
+                  },
+                  "endpoint": {
+                    "isEnabled": false,
+                    "level": 0,
+                    "mode": "None",
+                    "policy": "None",
+                    "timeout": 15000
+                  }
+                }
+              },
+              "session": {
+                "subscription": {}
+              },
+              "optimizeNodeValueReadAccess": true
+            },
+            "edgeMethodMapping": {}
+          }
+        },
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.OpcUaClientModule/versions/2",
+        "$messageOutputs": {},
+        "$timestamp": "2024-05-16T09:24:16.5753226Z",
+        "$version": 10
+      }
+    },
+    "mustache": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5759437Z",
+        "$version": 6
+      }
+    },
+    "rfcreader": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5759957Z",
+        "$version": 6
+      }
+    },
+    "logger": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5760124Z",
+        "$version": 6
+      }
+    },
+    "streamprocessor": {
+      "configuration": {
+        "$timestamp": "2024-05-16T09:24:16.5760353Z",
+        "$version": 6
+      }
+    },
+    "system": {
+      "configuration": {
+        "firewallrules": {
+          "AdminAPIAutoRuleHTTP": {
+            "description": "Auto generated rule from AdminApiModule for HTTP Port.",
+            "action": "accept",
+            "direction": "inbound",
+            "protocol": "tcp",
+            "srcPort": 0,
+            "destPort": 80
+          },
+          "AdminAPIAutoRuleHTTPS": {
+            "description": "Auto generated rule from AdminApiModule for HTTPS Port.",
+            "action": "accept",
+            "direction": "inbound",
+            "protocol": "tcp",
+            "srcPort": 0,
+            "destPort": 443
+          }
+        },
+        "$timestamp": "2024-05-16T09:24:16.5760497Z",
+        "$version": 7
+      }
+    }
+  }
+}
