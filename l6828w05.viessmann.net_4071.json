@@ -1,0 +1,234 @@
+{
+  "modules": {
+    "mustache": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.MustacheEnricherModule/versions/1",
+        "$timestamp": "2024-03-06T13:27:22.0137355Z",
+        "$version": 1
+      }
+    },
+    "azure": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.IotHubSenderModule/versions/1",
+        "$timestamp": "2024-03-06T13:27:22.012167Z",
+        "$version": 1
+      }
+    },
+    "center": {
+      "configuration": {
+        "$timestamp": "2024-03-06T13:27:22.0149469Z",
+        "$version": 1
+      }
+    },
+    "modbus": {
+      "configuration": {
+        "$messageOutputs": {
+          "modbus_test.slave.modbus_PG": "modbus_PG"
+        },
+        "servers": {
+          "modbus_test": {
+            "connection": {
+              "variant": "Tcp",
+              "tcp": {
+                "ipAddress": "199.216.1.8",
+                "port": 4840
+              }
+            },
+            "slaves": {
+              "slave": {
+                "pollGroups": {
+                  "modbus_PG": {
+                    "model": {
+                      "Sensor": {
+                        "registerStartAddress": 1,
+                        "registerLength": 1,
+                        "functionCode": 1
+                      }
+                    },
+                    "intervalMs": 1000,
+                    "sourceMode": "UseSlaveName"
+                  }
+                },
+                "setupGroups": {},
+                "slaveId": 1,
+                "subscriptionGroups": {}
+              }
+            }
+          }
+        },
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.ModbusReaderModule/versions/2",
+        "$timestamp": "2024-05-07T07:34:11.2741249Z",
+        "$version": 2
+      }
+    },
+    "mqtt": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/MqttSender.IotEdge.Modules.MqttSenderModule/versions/1",
+        "$timestamp": "2024-03-06T13:27:22.0123298Z",
+        "$version": 1
+      }
+    },
+    "rfcreader": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.RFC1006ReaderModule/versions/1",
+        "$timestamp": "2024-03-06T13:27:22.0137666Z",
+        "$version": 1
+      }
+    },
+    "opcua": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.OpcUaClientModule/versions/2",
+        "servers": {
+          "W16IFNACE9503": {
+            "endpoint": {
+              "pollGroups": {
+                "W16IFNACE9503": {
+                  "nodes": {
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.PressureLeft": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"PressureLeft\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.PressureRight": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"PressureRight\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.PressureMain": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"PressureMain\""
+                  },
+                  "intervalMs": 1000
+                }
+              },
+              "subscriptionGroups": {
+                "sub:W16IFNACE9503": {
+                  "onChangeSubmitFullModel": false,
+                  "onRepublishSubmitFullModel": true,
+                  "nodes": {
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.Estop": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"Estop\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.GazexDGW": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"GazexDGW\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.GazexGGW": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"GazexGGW\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.GazexZasilanie": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"GazexZasilanie\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.ZaworAce": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"ZaworAce\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.Wentylator_Lewy": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"Wentylator_Lewy\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.Wentylator_Prawy": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"Wentylator_Prawy\"",
+                    "W16_CUPP_IOT.DataBlocksGlobal.IOT_FM_16IFNACE9503.Wentylator_Srodkowy": "ns=3;s=\"IOT_FM_16IFNACE9503\".\"Wentylator_Srodkowy\""
+                  },
+                  "publishingIntervalMs": 1000
+                }
+              },
+              "subscriptions": {},
+              "url": "opc.tcp://199.216.0.125:4840",
+              "resetBlackListIntervalMs": 15000
+            },
+            "client": {
+              "application": {
+                "security": {
+                  "authentication": {
+                    "credentials": {},
+                    "strategy": "Anonymous",
+                    "certificate": {}
+                  },
+                  "endpoint": {
+                    "isEnabled": true,
+                    "level": 0,
+                    "mode": "None",
+                    "policy": "None",
+                    "timeout": 15000
+                  }
+                }
+              },
+              "session": {
+                "subscription": {}
+              },
+              "optimizeNodeValueReadAccess": false
+            },
+            "edgeMethodMapping": {},
+            "conditions": {},
+            "statusCodeMapping": {}
+          }
+        },
+        "$messageOutputs": {
+          "W16IFNACE9503.W16IFNACE9503": "splunkPoll",
+          "W16IFNACE9503.sub:W16IFNACE9503": "splunk"
+        },
+        "$timestamp": "2024-05-15T14:46:44.7817545Z",
+        "$version": 15
+      }
+    },
+    "streamprocessor": {
+      "configuration": {
+        "$timestamp": "2024-03-06T13:27:22.0150302Z",
+        "$version": 1
+      }
+    },
+    "logger": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.FileLoggerModule/versions/1",
+        "$timestamp": "2024-03-06T13:27:22.0136761Z",
+        "$version": 1
+      }
+    },
+    "splunk": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.SplunkHecModule/versions/3",
+        "endpoint": {
+          "url": "https://10.13.21.22:8088/services/collector/event",
+          "token": "6112a68b-c8f6-4946-a7dd-7d48a710bc83",
+          "sslCheck": false
+        },
+        "host": "l6828w05.4071",
+        "interval": 1000,
+        "sendTimestamp": true,
+        "sourceType": "_json",
+        "bufferQueueSettings": {
+          "enablePersist": false
+        },
+        "$messageInputs": {
+          "splunkPoll": "telemetry",
+          "splunk": "event"
+        },
+        "$timestamp": "2024-05-16T05:54:37.000859Z",
+        "$version": 12
+      }
+    },
+    "system": {
+      "configuration": {
+        "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.EcmNetCore.Modules.SystemControlModule/versions/1",
+        "firewallrules": {
+          "AdminAPIAutoRuleHTTP": {
+            "description": "Auto generated rule from AdminApiModule for HTTP Port.",
+            "action": "accept",
+            "direction": "inbound",
+            "protocol": "tcp",
+            "destPort": 80,
+            "srcPort": 0
+          },
+          "AdminAPIAutoRuleHTTPS": {
+            "description": "Auto generated rule from AdminApiModule for HTTPS Port.",
+            "action": "accept",
+            "direction": "inbound",
+            "protocol": "tcp",
+            "destPort": 443,
+            "srcPort": 0
+          }
+        },
+        "metrics": {
+          "interval": 0,
+          "autoReset": false
+        },
+        "signals": {
+          "groups": {
+            "system_signals": {
+              "outputTopic": "system_signals",
+              "intervalMs": 60000,
+              "signals": {
+                "ss_modbus": {
+                  "source": "moduleStatus",
+                  "sourceKey": "modbus.status.connection.modbus_test.code"
+                },
+                "ss_opc": {
+                  "source": "moduleStatus",
+                  "sourceKey": "opcua.status.connection.W16PS9500CablesKM1610000319.code"
+                }
+              }
+            }
+          }
+        },
+        "$timestamp": "2024-05-07T07:34:11.2961316Z",
+        "$version": 2
+      }
+    }
+  }
+}
