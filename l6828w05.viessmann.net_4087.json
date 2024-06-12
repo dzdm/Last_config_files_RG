@@ -577,7 +577,7 @@
                         "functionCode": 4
                       }
                     },
-                    "intervalMs": 10000,
+                    "intervalMs": 60000,
                     "sourceMode": "UseBoth"
                   },
                   "Current": {
@@ -872,21 +872,21 @@
           "W16EnergyManagement1.LightingExterior.LightingExterior": "splunk",
           "W16EnergyManagement1.LightingGeneral.LightingGeneral": "splunk",
           "W16EnergyManagement1.BusBar2.BusBar2": "BusBar2",
-          "W16EnergyManagement1.AxisA.Consumption": "splunkPoll",
-          "W16EnergyManagement1.AxisB.Consumption": "splunkPoll",
-          "W16EnergyManagement1.AxisC.Consumption": "splunkPoll",
-          "W16EnergyManagement1.LightingExterior.Consumption": "splunkPoll",
-          "W16EnergyManagement1.LightingGeneral.Consumption": "splunkPoll",
-          "W16EnergyManagement1.BusBar2.Consumption": "splunkPoll",
-          "W16EnergyManagement1.BusBar4.Consumption": "splunkPoll",
-          "W16EnergyManagement1.GT2500.Consumption": "splunkPoll",
+          "W16EnergyManagement1.AxisA.Consumption": "Stream",
+          "W16EnergyManagement1.AxisB.Consumption": "Stream",
+          "W16EnergyManagement1.AxisC.Consumption": "Stream",
+          "W16EnergyManagement1.LightingExterior.Consumption": "Stream",
+          "W16EnergyManagement1.LightingGeneral.Consumption": "Stream",
+          "W16EnergyManagement1.BusBar2.Consumption": "Stream",
+          "W16EnergyManagement1.BusBar4.Consumption": "Stream",
+          "W16EnergyManagement1.GT2500.Consumption": "Stream",
           "W16EnergyManagement1.GT2500.GT2500": "GT2500",
           "W16EnergyManagement1.BusBar4.Current": "splunkPoll",
           "W16EnergyManagement1.BusBar2.Current": "splunkPoll",
           "W16EnergyManagement1.GT2500.Current": "splunkPoll",
-          "W16EnergyManagement1.BusBar1.Consumption": "splunkPoll",
+          "W16EnergyManagement1.BusBar1.Consumption": "Stream",
           "W16EnergyManagement1.BusBar1.BusBar1": "splunk",
-          "W16EnergyManagement1.BusBar3.Consumption": "splunkPoll",
+          "W16EnergyManagement1.BusBar3.Consumption": "Stream",
           "W16EnergyManagement1.AxisB.Current": "splunkPoll",
           "W16EnergyManagement1.AxisA.Current": "splunkPoll",
           "W16EnergyManagement1.AxisC.Current": "splunkPoll",
@@ -896,8 +896,8 @@
           "W16EnergyManagement1.BusBar3.Current": "splunkPoll"
         },
         "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.ModbusReaderModule/versions/2",
-        "$timestamp": "2024-05-16T13:04:25.5408499Z",
-        "$version": 15
+        "$timestamp": "2024-05-17T10:26:06.5440224Z",
+        "$version": 27
       }
     },
     "mqtt": {
@@ -911,7 +911,7 @@
           "cleansession": true,
           "clientid": "I6828w05_4087",
           "enabled": true,
-          "hostname": "mqtt-ingest.dev.digitalmanufacturing.viessmann.net",
+          "hostname": "108.141.221.249",
           "password": "bqtFZh2KiOdwom2X6W4zDVlS6D6BP2s0",
           "port": 1883,
           "username": "dmpmqtt"
@@ -924,14 +924,14 @@
         "topic": "Poland/DolnySlansk/Legnica/Old/LineX/{header:source}",
         "skip_non_json_messages_from_mqttbroker": true,
         "$messageOutputs": {
-          "": ""
+          "test": "mqttTest"
         },
         "subscribe": {
-          "": ""
+          "/test/message": "test"
         },
         "maxQueueSize": 1000,
-        "$timestamp": "2024-05-14T15:11:51.5867406Z",
-        "$version": 5
+        "$timestamp": "2024-06-04T10:15:18.910378Z",
+        "$version": 7
       }
     },
     "rfcreader": {
@@ -1203,24 +1203,22 @@
       "configuration": {
         "configuration": {
           "inputs": {
-            "Input-4": {
-              "sourceRegEx": "W16EnergyManagement1.BusBar4",
+            "Input": {
+              "sourceRegEx": "W16EnergyManagement1.*",
               "scopeRegEx": "Consumption",
               "into": [
-                "Aggregator-3",
-                "Aggregator-4"
+                "EnergyMeter"
               ]
             }
           },
           "blocks": {
-            "Aggregator-3": {
+            "BusBar1 Previous": {
               "type": "Aggregator",
               "behaviour": {
                 "Model": {
-                  "Active_Energy_PG_100MWh": "last",
-                  "Active_Energy_PG_kWh": "last"
+                  "EnergyMeter": "first"
                 },
-                "default": "last"
+                "default": "ignore"
               },
               "window": {
                 "HoppingEach": 1,
@@ -1228,53 +1226,299 @@
                 "WindowSize": 2
               },
               "into": [
-                "ExpEval-4"
+                "EnergyMeterOld"
               ]
             },
-            "Output-5": {
-              "type": "Output",
-              "source": "",
-              "scope": ""
-            },
-            "Aggregator-4": {
+            "BusBar4 Previous": {
               "type": "Aggregator",
               "behaviour": {
                 "Model": {
-                  "Active_Energy_PG_kWh": "first",
-                  "Active_Energy_PG_100MWh": "first"
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              },
+              "into": [
+                "EnergyMeterOld"
+              ]
+            },
+            "EnergyMeter": {
+              "type": "ExpEval",
+              "expressions": {
+                "EnergyMeter": "100000*Active_Energy_PG_100MWh+Active_Energy_PG_kWh"
+              },
+              "into": [
+                "Router-2",
+                "Concat.meta1"
+              ],
+              "PreserveInputProperties": true
+            },
+            "Router-2": {
+              "type": "Router",
+              "routes": {
+                "BusBar1": {
+                  "outputTopic": "",
+                  "into": [
+                    "BusBar1 Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.BusBar1')"
+                },
+                "BusBar2": {
+                  "outputTopic": "",
+                  "into": [
+                    "BusBar2 Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.BusBar2')"
+                },
+                "BusBar3": {
+                  "outputTopic": "",
+                  "into": [
+                    "BusBar3 Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.BusBar3')"
+                },
+                "BusBar4": {
+                  "outputTopic": "",
+                  "into": [
+                    "BusBar4 Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.BusBar4')"
+                },
+                "AxisA": {
+                  "outputTopic": "",
+                  "into": [
+                    "AxisA Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.AxisA')"
+                },
+                "AxisB": {
+                  "outputTopic": "",
+                  "into": [
+                    "AxisB Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.AxisB')"
+                },
+                "AxisC": {
+                  "outputTopic": "",
+                  "into": [
+                    "AxisC Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.AxisC')"
+                },
+                "LightingExterior": {
+                  "outputTopic": "",
+                  "into": [
+                    " LightingExterior Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.LightingExterior')"
+                },
+                "LightingGeneral": {
+                  "outputTopic": "",
+                  "into": [
+                    " LightingGeneral Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.  LightingGeneral')"
+                },
+                "GT2500": {
+                  "outputTopic": "",
+                  "into": [
+                    " GT2500 Previous"
+                  ],
+                  "condition": "(header_source == 'W16EnergyManagement1.GT2500')"
+                }
+              },
+              "defaultInto": []
+            },
+            "Difference": {
+              "type": "ExpEval",
+              "into": [
+                "Filter"
+              ],
+              "expressions": {
+                "Difference": "EnergyMeter-EnergyMeterOld"
+              },
+              "PreserveInputProperties": true
+            },
+            "Filter": {
+              "type": "Router",
+              "routes": {
+                "Send": {
+                  "outputTopic": "",
+                  "into": [
+                    "Streamed"
+                  ],
+                  "condition": "(body_Difference < 10 && body_Difference >= 0 && body_EnergyMeter > 0)"
+                }
+              },
+              "into": [],
+              "defaultInto": [
+                "Rejected"
+              ]
+            },
+            "Rejected": {
+              "type": "Output",
+              "source": "",
+              "scope": "Rejected"
+            },
+            "Streamed": {
+              "type": "Output",
+              "source": "",
+              "scope": "Streamed"
+            },
+            "BusBar2 Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "into": [
+                "EnergyMeterOld"
+              ],
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              }
+            },
+            "BusBar3 Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "into": [
+                "EnergyMeterOld"
+              ],
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              }
+            },
+            "Concat": {
+              "type": "Join",
+              "numberOfMetaChannels": 1,
+              "mergeArrayHandling": "Concat",
+              "into": [
+                "Difference"
+              ]
+            },
+            "EnergyMeterOld": {
+              "type": "ExpEval",
+              "expressions": {
+                "EnergyMeterOld": "EnergyMeter"
+              },
+              "into": [
+                "Concat.main"
+              ],
+              "PreserveInputProperties": false
+            },
+            "AxisA Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "into": [
+                "EnergyMeterOld"
+              ],
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              }
+            },
+            "AxisB Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              },
+              "into": [
+                "EnergyMeterOld"
+              ]
+            },
+            "AxisC Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "into": [
+                "EnergyMeterOld"
+              ],
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              }
+            },
+            " LightingExterior Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
+              },
+              "into": [
+                "EnergyMeterOld"
+              ],
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
+              }
+            },
+            " LightingGeneral Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
                 },
                 "default": "first"
               },
+              "into": [],
               "window": {
                 "HoppingEach": 1,
                 "WindowsBasedOn": "Samples",
                 "WindowSize": 2
+              }
+            },
+            " GT2500 Previous": {
+              "type": "Aggregator",
+              "behaviour": {
+                "Model": {
+                  "EnergyMeter": "first"
+                },
+                "default": "ignore"
               },
               "into": [
-                "ExpEval-5"
-              ]
-            },
-            "Output-6": {
-              "type": "Output",
-              "source": "",
-              "scope": ""
-            },
-            "ExpEval-4": {
-              "type": "ExpEval",
-              "expressions": {
-                "energy_new": "100000*Active_Energy_PG_100MWh+Active_Energy_PG_kWh"
-              },
-              "into": [
-                "Output-5"
-              ]
-            },
-            "ExpEval-5": {
-              "type": "ExpEval",
-              "into": [
-                "Output-6"
+                "EnergyMeterOld"
               ],
-              "expressions": {
-                "energy_old": "100000*Active_Energy_PG_100MWh+Active_Energy_PG_kWh"
+              "window": {
+                "HoppingEach": 1,
+                "WindowsBasedOn": "Samples",
+                "WindowSize": 2
               }
             }
           },
@@ -1282,48 +1526,96 @@
           "ui": {
             "flowEditor": {
               "blockPositions": {
-                "Aggregator-3": {
-                  "x": -267.4284812067524,
-                  "y": -212.14285394350185
+                "BusBar1 Previous": {
+                  "x": 928.9044815054252,
+                  "y": 149.7281786977194
                 },
-                "Input-4": {
-                  "x": -676,
-                  "y": -214
+                "BusBar4 Previous": {
+                  "x": 928.1249872472515,
+                  "y": 749.1386753184443
                 },
-                "Output-5": {
-                  "x": 477.0000948970868,
-                  "y": -213.99998913073014
+                "EnergyMeter": {
+                  "x": -82.24081939082683,
+                  "y": 1945.2943147579417
                 },
-                "Aggregator-4": {
-                  "x": -275,
-                  "y": 19
+                "Difference": {
+                  "x": 2354.8831762997097,
+                  "y": 1897.419273954203
                 },
-                "Output-6": {
-                  "x": 480,
-                  "y": 22
+                "Filter": {
+                  "x": 2696.026354226178,
+                  "y": 1894.828320581758
                 },
-                "ExpEval-4": {
-                  "x": 105,
-                  "y": -213
+                "Rejected": {
+                  "x": 3090.8202303302137,
+                  "y": 1827.1142595332522
                 },
-                "ExpEval-5": {
-                  "x": 101,
-                  "y": 16
+                "Streamed": {
+                  "x": 3084.705405135022,
+                  "y": 2060.42549075289
+                },
+                "Input": {
+                  "x": -479.56629768168034,
+                  "y": 1942.1245500159002
+                },
+                "Router-2": {
+                  "x": 400.47470701651383,
+                  "y": 1252.8839685517094
+                },
+                "BusBar2 Previous": {
+                  "x": 929.3441918598251,
+                  "y": 334.8648749304941
+                },
+                "BusBar3 Previous": {
+                  "x": 929.5322360332362,
+                  "y": 534.5301932241637
+                },
+                "Concat": {
+                  "x": 2021.4233922532592,
+                  "y": 1897.200304171239
+                },
+                "EnergyMeterOld": {
+                  "x": 1576.1163394392313,
+                  "y": 1543.3301397852538
+                },
+                "AxisA Previous": {
+                  "x": 930.371907514772,
+                  "y": 957.8411787626908
+                },
+                "AxisB Previous": {
+                  "x": 925.6019996694392,
+                  "y": 1147.6679261277359
+                },
+                "AxisC Previous": {
+                  "x": 923.6367658640776,
+                  "y": 1338.290859683281
+                },
+                " LightingExterior Previous": {
+                  "x": 925.6020105470581,
+                  "y": 1542.670039568412
+                },
+                " LightingGeneral Previous": {
+                  "x": 923.6373642771784,
+                  "y": 1725.4334860320391
+                },
+                " GT2500 Previous": {
+                  "x": 929.4485368323759,
+                  "y": 1893.7770726080194
                 }
               }
             }
           }
         },
         "$messageInputs": {
-          "splunkPoll": "streamprocessor"
+          "Stream": "streamprocessor"
         },
         "$messageOutputs": {
-          "Output-5": "test",
-          "Output-6": "test-2"
+          "Rejected": "Rejected",
+          "Streamed": "Streamed"
         },
         "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.StreamProcessorModule/versions/5",
-        "$timestamp": "2024-05-16T14:34:52.1142263Z",
-        "$version": 19
+        "$timestamp": "2024-05-17T10:50:14.5670831Z",
+        "$version": 80
       }
     },
     "logger": {
@@ -1352,10 +1644,12 @@
           "splunk": "event",
           "splunkPoll": "telemetry",
           "$splunkDiag": "telemetry",
-          "$system_signals": "telemetry"
+          "$system_signals": "telemetry",
+          "Streamed": "telemetry",
+          "mqttTest": "event"
         },
-        "$timestamp": "2024-04-12T07:24:31.109928Z",
-        "$version": 4
+        "$timestamp": "2024-05-29T11:11:40.3815595Z",
+        "$version": 16
       }
     },
     "system": {

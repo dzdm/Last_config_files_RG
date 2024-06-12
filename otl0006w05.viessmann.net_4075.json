@@ -10,7 +10,7 @@
             "connection": {
               "variant": "Tcp",
               "tcp": {
-                "ipAddress": "10.31.128.114",
+                "ipAddress": "",
                 "port": 4840
               }
             },
@@ -37,8 +37,8 @@
           }
         },
         "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.ModbusReaderModule/versions/2",
-        "$timestamp": "2024-05-06T10:24:41.252647Z",
-        "$version": 13
+        "$timestamp": "2024-06-05T11:46:13.4635341Z",
+        "$version": 17
       }
     },
     "center": {
@@ -489,7 +489,7 @@
                 }
               },
               "subscriptions": {},
-              "url": "opc.tcp://10.31.128.114:4840",
+              "url": "opc.tcp://10.31.128.114:4842",
               "resetBlackListIntervalMs": 15000
             },
             "client": {
@@ -525,8 +525,8 @@
           "W16HeliumTesterODUIV1673000304.DB_100": "DB_100",
           "W16HeliumTesterODUIV1673000304.S3.Data": "splunkPoll"
         },
-        "$timestamp": "2024-05-06T10:24:41.2537678Z",
-        "$version": 60
+        "$timestamp": "2024-06-05T12:07:12.3968832Z",
+        "$version": 62
       }
     },
     "mustache": {

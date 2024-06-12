@@ -144,7 +144,7 @@
                   },
                   "endpoint": {
                     "isEnabled": true,
-                    "level": 0,
+                    "level": 1,
                     "mode": "None",
                     "policy": "None",
                     "timeout": 15000
@@ -166,8 +166,8 @@
           "W16KT638TesterCablesKMIV1650001508.Connected": "splunk",
           "W16KT638TesterCablesKMIV1650001508.W16KT638TesterCabelsKMIV1650001508": "splunk"
         },
-        "$timestamp": "2024-04-04T08:00:05.9866875Z",
-        "$version": 32
+        "$timestamp": "2024-05-21T07:50:38.7661869Z",
+        "$version": 56
       }
     },
     "mustache": {
