@@ -87,27 +87,27 @@
                 },
                 "poll:W16NoyenCleanerCUPPIV16780915:S3.Data": {
                   "nodes": {
-                    "S3.Water.ValveState.1": "ns=2;s=S7-1.IoT.S3.Water.ValveState.1",
-                    "S3.Water.Flow.1": "ns=2;s=S7-1.IoT.S3.Water.Flow.1",
-                    "S3.Water.UtilityMeter.1": "ns=2;s=S7-1.IoT.S3.Water.UtilityMeter.1",
-                    "S3.Water.Pressure.1": "ns=2;s=S7-1.IoT.S3.Water.Pressure.1",
-                    "S3.Water.PressureMin.1": "ns=2;s=S7-1.IoT.S3.Water.PressureMin.1",
-                    "S3.Water.PressureMax.1": "ns=2;s=S7-1.IoT.S3.Water.PressureMax.1",
-                    "S3.Water.Level.Washing": "ns=2;s=S7-1.IoT.S3.Water.Level.Washing",
-                    "S3.Water.Level.Rinsing1": "ns=2;s=S7-1.IoT.S3.Water.Level.Rinsing1",
-                    "S3.Water.Level.Rinsing2": "ns=2;s=S7-1.IoT.S3.Water.Level.Rinsing2",
-                    "S3.CompressedAir.ValveState.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.ValveState.1",
-                    "S3.CompressedAir.CurrentFlow.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.CurrentFlow.1",
-                    "S3.CompressedAir.UtilityMeter.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.UtilityMeter.1",
-                    "S3.CompressedAir.Pressure.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.Pressure.1",
-                    "S3.CompressedAir.PressureMin.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.PressureMin.1",
-                    "S3.CompressedAir.PressureMax.1": "ns=2;s=S7-1.IoT.S3.CompressedAir.PressureMax.1"
+                    "S3.Water.ValveState.1": "ns=2;s=S7-1.DB.IoT.S3.Water.ValveState.1",
+                    "S3.Water.Flow.1": "ns=2;s=S7-1.DB.IoT.S3.Water.Flow.1",
+                    "S3.Water.UtilityMeter.1": "ns=2;s=S7-1.DB.IoT.S3.Water.UtilityMeter.1",
+                    "S3.Water.Pressure.1": "ns=2;s=S7-1.DB.IoT.S3.Water.Pressure.1",
+                    "S3.Water.PressureMin.1": "ns=2;s=S7-1.DB.IoT.S3.Water.PressureMin.1",
+                    "S3.Water.PressureMax.1": "ns=2;s=S7-1.DB.IoT.S3.Water.PressureMax.1",
+                    "S3.Water.Level.Washing": "ns=2;s=S7-1.DB.IoT.S3.Water.Level.Washing",
+                    "S3.Water.Level.Rinsing1": "ns=2;s=S7-1.DB.IoT.S3.Water.Level.Rinsing1",
+                    "S3.Water.Level.Rinsing2": "ns=2;s=S7-1.DB.IoT.S3.Water.Level.Rinsing2",
+                    "S3.CompressedAir.ValveState.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.ValveState.1",
+                    "S3.CompressedAir.CurrentFlow.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.CurrentFlow.1",
+                    "S3.CompressedAir.UtilityMeter.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.UtilityMeter.1",
+                    "S3.CompressedAir.Pressure.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.Pressure.1",
+                    "S3.CompressedAir.PressureMin.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.PressureMin.1",
+                    "S3.CompressedAir.PressureMax.1": "ns=2;s=S7-1.DB.IoT.S3.CompressedAir.PressureMax.1"
                   },
                   "intervalMs": 1000
                 }
               },
               "subscriptionGroups": {
-                "sub:poll:W16NoyenCleanerCUPPIV16780915:poll:W16NoyenCleanerCUPPIV16780915": {
+                "sub:W16NoyenCleanerCUPPIV16780915:W16NoyenCleanerCUPPIV16780915": {
                   "onChangeSubmitFullModel": false,
                   "onRepublishSubmitFullModel": true,
                   "nodes": {
@@ -343,7 +343,8 @@
                     "S5.AI.TemperaturaZaNagrzewnica2": "ns=2;s=S7-1.DB.IoT.S5.AI.S315.TemperaturaZaNagrzewnica2",
                     "S5.AI.TemperaturaMycie": "ns=2;s=S7-1.DB.IoT.S5.AI.S317.TemperaturaMycie"
                   },
-                  "publishingIntervalMs": 1000
+                  "publishingIntervalMs": 1000,
+                  "republishingIntervalMs": 1000
                 }
               },
               "subscriptions": {},
@@ -381,10 +382,10 @@
           "W16NoyenCleanerCUPPIV16780915.poll:W16NoyenCleanerCUPPIV16780915:S1.Data": "enrich",
           "W16NoyenCleanerCUPPIV16780915.poll:W16NoyenCleanerCUPPIV16780915:GatewayWatchdog": "enrich",
           "W16NoyenCleanerCUPPIV16780915.poll:W16NoyenCleanerCUPPIV16780915:S3.Data": "enrich",
-          "W16NoyenCleanerCUPPIV16780915.sub:poll:W16NoyenCleanerCUPPIV16780915:poll:W16NoyenCleanerCUPPIV16780915": "enrich"
+          "W16NoyenCleanerCUPPIV16780915.sub:W16NoyenCleanerCUPPIV16780915:W16NoyenCleanerCUPPIV16780915": "enrich"
         },
-        "$timestamp": "2024-05-09T10:40:22.3556109Z",
-        "$version": 13
+        "$timestamp": "2024-05-20T12:53:38.8331737Z",
+        "$version": 23
       }
     },
     "streamprocessor": {

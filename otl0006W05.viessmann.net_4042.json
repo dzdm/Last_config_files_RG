@@ -34,7 +34,7 @@
                 "W16TightnessTesterODUIV1673000347": {
                   "republishingIntervalMs": 0,
                   "onChangeSubmitFullModel": false,
-                  "onRepublishSubmitFullModel": true,
+                  "onRepublishSubmitFullModel": false,
                   "nodes": {
                     "S7.Status_New_Data_available": "ns=2;s=S7-1500.DB.DB_Furness_Leak.Status.Standard_Status.New_Data_available",
                     "S7.Status_Ready_to_start": "ns=2;s=S7-1500.DB.DB_Furness_Leak.Status.Standard_Status.Ready_to_start",
@@ -266,6 +266,16 @@
                   "name": "W16HMITightnessTesterODUIV1673000347",
                   "outputTopic": "splunk",
                   "publishingIntervalMs": 200
+                },
+                "Clock": {
+                  "onChangeSubmitFullModel": false,
+                  "onRepublishSubmitFullModel": true,
+                  "nodes": {
+                    "S1.Connected": "ns=2;s=S7-1500.M.Clock_0.5Hz"
+                  },
+                  "name": "Clock",
+                  "outputTopic": "splunk",
+                  "publishingIntervalMs": 200
                 }
               },
               "subscriptions": {},
@@ -301,10 +311,11 @@
         "$schema": "https://schemas.robotron.de/robogate/modules/Robotron.IotEdge.Modules.OpcUaClientModule/versions/2",
         "$messageOutputs": {
           "W16TightnessTesterODUIV1673000347.W16TightnessTesterODUIV1673000347": "splunk",
-          "W16TightnessTesterODUIV1673000347.W16HMITightnessTesterODUIV1673000347": "splunk"
+          "W16TightnessTesterODUIV1673000347.W16HMITightnessTesterODUIV1673000347": "splunk",
+          "W16TightnessTesterODUIV1673000347.Clock": "splunk"
         },
-        "$timestamp": "2024-05-15T12:22:52.9611561Z",
-        "$version": 74
+        "$timestamp": "2024-06-05T07:14:42.6315347Z",
+        "$version": 81
       }
     },
     "streamprocessor": {
